@@ -1,0 +1,11 @@
+<% provide(:title, 'All users') %>
+<h1>All users</h1>
+
+<%= will_paginate %>
+
+<ul class="users">
+    <% # @users - array of User objects, render iterates through each item. %>
+    <%= render @users %> 
+</ul>
+
+<%= will_paginate %>
