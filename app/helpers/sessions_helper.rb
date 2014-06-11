@@ -24,6 +24,14 @@ module SessionsHelper
   	!current_user.nil?
   end
 
+  def signed_in_user
+    #notice: , is same as flash[:notice], its a hash of redirect_to
+    unless signed_in?
+      store_location
+      redirect_to signin_path, notice: "Please sign in."
+    end
+  end
+
   def sign_out
     current_user.update_attribute(:remember_token,
     							  User.digest(User.new_remember_token))
