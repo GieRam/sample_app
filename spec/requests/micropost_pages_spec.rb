@@ -5,6 +5,7 @@ describe "MicropostPages" do
   subject { page }
 
   let(:user) { FactoryGirl.create(:user) }
+
   before { sign_in user }
 
   describe "micropost creation" do
@@ -40,6 +41,23 @@ describe "MicropostPages" do
       it "should delete a micropost" do
         expect { click_link "delete" }.to change(Micropost, :count).by(-1)
       end
+    end
+
+    describe "as incorrect user" do
+      let(:user2) { FactoryGirl.create(:user) }
+      before { FactoryGirl.create(:micropost, user: user2 ) }
+      before { visit user_path(user2) }
+
+      it { should_not have_content("delete") }
+    end
+  end
+
+  describe "user micropost count" do
+    before { FactoryGirl.create(:micropost, user: user) }
+    before { visit root_path }
+    
+    it "should show the total count of posts" do
+      expect(page).to have_content("micropost".pluralize(user.microposts.count))
     end
   end
   
